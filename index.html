@@ -26,28 +26,54 @@
     <hr>
     place name : <p id="place_name"></p>
 
-    <script>
-        const kota = "jakarta";
-        const urlapi = "https://api.maptiler.com/geocoding/"+kota+".json?key=FCiXCP3dkD1ytBHZ5zIH"
+<script>
+        const apiKey = "FCiXCP3dkD1ytBHZ5zIH";
 
-        $.ajax({
-            url : urlapi,
-            method : "GET",
-            success: function(data){
-                console.log(data);
-                const l = document.getElementById("lokasi");
-                const n = document.getElementById("negara");
-                
-                let lokasi = data.features[0].text; 
-                let negara = data.features[0].context[1].text;
-                
-                l.innerHTML = lokasi;
-                n.innerHTML = negara;
-            },
-            error : function(error){
-                console.log(error);
-            }
-        }); 
+        function cariKota(namaKota) {
+            const urlapi = "https://api.maptiler.com/geocoding/" + encodeURIComponent(namaKota) + ".json?key=" + apiKey;
+
+            $.ajax({
+                url: urlapi,
+                method: "GET",
+                success: function(data) {
+                    if (data.features && data.features.length > 0) {
+                        const feature = data.features[0];
+
+                        let lokasi = feature.text || "-";
+                        let negaraData = feature.context ? feature.context.find(c => c.id.startsWith("country")) : null;
+                        let negara = negaraData ? negaraData.text : "-";
+
+                        let lng = feature.geometry.coordinates[0];
+                        let lat = feature.geometry.coordinates[1];
+                        let koordinat = lat + ", " + lng;
+
+                        let matchingText = feature.matching_text || feature.text || "-";
+                        let placeName = feature.place_name || "-";
+
+                        $("#lokasi").text(lokasi);
+                        $("#negara").text(negara);
+                        $("#koordinat").text(koordinat);
+                        $("#matching_text").text(matchingText);
+                        $("#place_name").text(placeName);
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            cariKota("jakarta");
+
+            $("#searchForm").on("submit", function(e) {
+                e.preventDefault();
+                let keyword = $("#inputKota").val().trim();
+                if (keyword !== "") {
+                    cariKota(keyword);
+                }
+            });
+        });
     </script>
 </body>
 </html>
