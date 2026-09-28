@@ -4,29 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body {
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 450px;
+        }
+    </style>
 </head>
 <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/4.0.0/jquery.min.js" integrity="sha512-8LENNbXmzI/Gbj+OwXmqR6V4QaUAw0/porPzy1+dQoJqC0JPHedWoe0DDOTL2uHA5XXJyIsPtiMHH86pVlay6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <h3>Nama : Gardian Athoya Rahman</h3>
-    <h3>NIM : 20240140083</h3>
+    <div class="container">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/4.0.0/jquery.min.js" integrity="sha512-8LENNbXmzI/Gbj+OwXmqR6V4QaUAw0/porPzy1+dQoJqC0JPHedWoe0DDOTL2uHA5XXJyIsPtiMHH86pVlay6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        
+        <h3>Nama : Gardian Athoya Rahman</h3>
+        <h3>NIM : 20240140083</h3>
 
-    <form id="searchForm">
-        <input type="text" id="inputKota" placeholder="Masukkan nama kota..." value="jakarta">
-        <button type="submit">Cari</button>
-    </form>
-    <hr>
+        <form id="searchForm">
+            <input type="text" id="inputKota" placeholder="Masukkan nama kota..." value="jakarta">
+            <button type="submit">Cari</button>
+        </form>
+        <hr>
 
-    kota : <p id="lokasi"></p>
-    <hr>
-    negara : <p id="negara"></p>
-    <hr>
-    koordinat : <p id="koordinat"></p>
-    <hr>
-    matching text : <p id="matching_text"></p>
-    <hr>
-    place name : <p id="place_name"></p>
+        kota : <p id="lokasi"></p>
+        <hr>
+        negara : <p id="negara"></p>
+        <hr>
+        koordinat : <p id="koordinat"></p>
+        <hr>
+        matching text : <p id="matching_text"></p>
+        <hr>
+        place name : <p id="place_name"></p>
+    </div>
 
-<script>
+    <script>
         const apiKey = "FCiXCP3dkD1ytBHZ5zIH";
 
         function cariKota(namaKota) {
