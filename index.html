@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>MapTiler Geocoding Search</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
         body {
             background-color: #f4f7f6;
             display: flex;
@@ -12,39 +17,130 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            font-family: Arial, sans-serif;
+            padding: 20px;
         }
         .container {
             background: #ffffff;
             padding: 30px;
-            border-radius: 10px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
             width: 100%;
-            max-width: 450px;
+            max-width: 480px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .header h3 {
+            margin: 4px 0;
+            color: #333;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .search-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .search-form input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-form input:focus {
+            border-color: #007bff;
+        }
+        .search-form button {
+            padding: 10px 18px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .search-form button:hover {
+            background-color: #0056b3;
+        }
+        .result-box {
+            background-color: #fafafa;
+            border: 1px solid #eaeaea;
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .info-group {
+            margin-bottom: 10px;
+        }
+        .info-group:last-child {
+            margin-bottom: 0;
+        }
+        .info-label {
+            font-size: 11px;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+        .info-value {
+            font-size: 14px;
+            color: #222;
+            font-weight: 600;
+            margin: 0;
+            word-break: break-word;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background: #eee;
+            margin: 10px 0;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/4.0.0/jquery.min.js" integrity="sha512-8LENNbXmzI/Gbj+OwXmqR6V4QaUAw0/porPzy1+dQoJqC0JPHedWoe0DDOTL2uHA5XXJyIsPtiMHH86pVlay6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        
-        <h3>Nama : Gardian Athoya Rahman</h3>
-        <h3>NIM : 20240140083</h3>
+        <div class="header">
+            <h3>Nama : Gardian Athoya Rahman</h3>
+            <h3>NIM : 20240140083</h3>
+        </div>
 
-        <form id="searchForm">
-            <input type="text" id="inputKota" placeholder="Masukkan nama kota..." value="jakarta">
+        <form id="searchForm" class="search-form">
+            <input type="text" id="inputKota" placeholder="Masukkan nama kota..." value="jakarta" required>
             <button type="submit">Cari</button>
         </form>
-        <hr>
 
-        kota : <p id="lokasi"></p>
-        <hr>
-        negara : <p id="negara"></p>
-        <hr>
-        koordinat : <p id="koordinat"></p>
-        <hr>
-        matching text : <p id="matching_text"></p>
-        <hr>
-        place name : <p id="place_name"></p>
+        <div class="result-box">
+            <div class="info-group">
+                <div class="info-label">Kota</div>
+                <p id="lokasi" class="info-value">-</p>
+            </div>
+            <hr>
+            <div class="info-group">
+                <div class="info-label">Negara</div>
+                <p id="negara" class="info-value">-</p>
+            </div>
+            <hr>
+            <div class="info-group">
+                <div class="info-label">Koordinat (Latitude, Longitude)</div>
+                <p id="koordinat" class="info-value">-</p>
+            </div>
+            <hr>
+            <div class="info-group">
+                <div class="info-label">Matching Text</div>
+                <p id="matching_text" class="info-value">-</p>
+            </div>
+            <hr>
+            <div class="info-group">
+                <div class="info-label">Place Name</div>
+                <p id="place_name" class="info-value">-</p>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -76,6 +172,12 @@
                         $("#koordinat").text(koordinat);
                         $("#matching_text").text(matchingText);
                         $("#place_name").text(placeName);
+                    } else {
+                        $("#lokasi").text("Data tidak ditemukan");
+                        $("#negara").text("-");
+                        $("#koordinat").text("-");
+                        $("#matching_text").text("-");
+                        $("#place_name").text("-");
                     }
                 },
                 error: function(error) {
